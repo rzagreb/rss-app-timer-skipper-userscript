@@ -36,11 +36,19 @@
                 // Replace the old script with the new one
                 script.parentNode.replaceChild(newScript, script);
 
-                break;
+                return true;
             }
         }
+        return false;
     }
 
-    window.addEventListener('load', modifyTimerScript);
+    function waitForScripts() {
+        // Retry after a short delay if script is not yet  available
+        if (!modifyTimerScript()) {
+            setTimeout(waitForScripts, 100);
+        }
+    }
+    
+    waitForScripts();
 
 })();
